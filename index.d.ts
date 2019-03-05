@@ -25,6 +25,15 @@ export interface TriangleAttrs extends HyperScriptAttrs {
 }
 /** Equilateral triangle with any rotation */
 export declare function triangle(h: HyperScript, attrs?: TriangleAttrs): any;
+export interface ArcAttrs extends HyperScriptAttrs {
+    x?: number;
+    y?: number;
+    radius?: number;
+    startAngle?: number;
+    endAngle?: number;
+}
+/** Arc drawn from start to end angle */
+export declare function arc(h: HyperScript, attrs?: ArcAttrs): any;
 export declare function downloadIcon(h: HyperScript): any;
 export declare function shareIcon(h: HyperScript): any;
 /**
@@ -36,6 +45,8 @@ export default function HyperSVG(h: HyperScript, config?: HyperSVGAttrs): {
     svgRect: (attrs: HyperSVGAttrs, rcAttrs: RectAttrs) => any;
     triangle: (attrs?: TriangleAttrs | undefined) => any;
     svgTriangle: (attrs?: HyperSVGAttrs | undefined, triAttrs?: TriangleAttrs | undefined) => any;
+    arc: (attrs?: ArcAttrs | undefined) => any;
+    svgArc: (attrs?: HyperSVGAttrs | undefined, arcAttrs?: ArcAttrs | undefined) => any;
     downloadIcon: () => any;
     svgDownloadIcon: (attrs?: HyperSVGAttrs | undefined) => any;
     shareIcon: () => any;

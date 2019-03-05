@@ -57,6 +57,24 @@ export function triangle (h: HyperScript, attrs: TriangleAttrs = {}) {
 	})
 }
 
+// Arc
+
+export interface ArcAttrs extends HyperScriptAttrs {
+	x?: number
+	y?: number
+	radius?: number
+	startAngle?: number
+	endAngle?: number
+}
+
+/** Arc drawn from start to end angle */
+export function arc (h: HyperScript, attrs: ArcAttrs = {}) {
+	const {x = 0.5, y = 0.5, radius = 0.5, startAngle = 0, endAngle = 360, ...arcAttrs} = attrs
+	return h('path', {...arcAttrs,
+		d: svgArcPath(x, y, radius, startAngle, endAngle)
+	})
+}
+
 // Icons
 
 export function downloadIcon (h: HyperScript) {
@@ -106,6 +124,14 @@ export default function HyperSVG (h: HyperScript, config: HyperSVGAttrs = {}) {
 				triangle(h, triAttrs)
 			)
 		},
+		arc: (attrs?: ArcAttrs) => {
+			return triangle(h, attrs)
+		},
+		svgArc: (attrs?: HyperSVGAttrs, arcAttrs?: ArcAttrs) => {
+			return svg(h, {...config, ...attrs},
+				arc(h, arcAttrs)
+			)
+		},
 		downloadIcon: () => downloadIcon(h),
 		svgDownloadIcon: (attrs?: HyperSVGAttrs) => svg(h,
 			{...config, viewBox: '0 0 433.5 433.5', ...attrs},
@@ -117,4 +143,48 @@ export default function HyperSVG (h: HyperScript, config: HyperSVGAttrs = {}) {
 			shareIcon(h)
 		)
 	}
+}
+
+// Helper functions
+
+/** 2D vector type */
+interface V2 {
+	x: number
+	y: number
+}
+
+/**
+ * Convert radius & degrees to cartesian coords
+ */
+function polarToCartesian (
+	out: V2, radius: number, degrees: number
+) {
+	const r = (degrees - 90) * Math.PI / 180.0
+	out.x = radius * Math.cos(r)
+	out.y = radius * Math.sin(r)
+	return out
+}
+
+const _p0 = {x: 0, y: 0}
+const _p1 = {x: 0, y: 0}
+
+/**
+ * Create an SVG arc path definition centred at x,y with radius,
+ * start and end angles (clockwise, in degrees).
+ * The returned string can be used for a `d` attribute of a `<path>` element
+ */
+function svgArcPath (
+	x: number, y: number, radius: number, startAngle: number, endAngle: number
+) {
+	const p0 = _p0
+	const p1 = _p1
+	polarToCartesian(p0, radius, endAngle)
+	polarToCartesian(p1, radius, startAngle)
+	p0.x += x
+	p0.y += y
+	p1.x += x
+	p1.y += y
+	const arcSweep = endAngle - startAngle <= 180 ? '0' : '1'
+	return 'M ' + p0.x + ' ' + p0.y +
+		'A ' + radius + ' ' + radius + ' 0 ' + arcSweep + ' 0 ' + p1.x + ' ' + p1.y
 }

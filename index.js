@@ -53,6 +53,13 @@ function triangle(h, attrs) {
     });
 }
 exports.triangle = triangle;
+/** Arc drawn from start to end angle */
+function arc(h, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    var _a = attrs.x, x = _a === void 0 ? 0.5 : _a, _b = attrs.y, y = _b === void 0 ? 0.5 : _b, _c = attrs.radius, radius = _c === void 0 ? 0.5 : _c, _d = attrs.startAngle, startAngle = _d === void 0 ? 0 : _d, _e = attrs.endAngle, endAngle = _e === void 0 ? 360 : _e, arcAttrs = __rest(attrs, ["x", "y", "radius", "startAngle", "endAngle"]);
+    return h('path', __assign({}, arcAttrs, { d: svgArcPath(x, y, radius, startAngle, endAngle) }));
+}
+exports.arc = arc;
 // Icons
 function downloadIcon(h) {
     return h('g', h('path', {
@@ -92,6 +99,12 @@ function HyperSVG(h, config) {
         svgTriangle: function (attrs, triAttrs) {
             return svg(h, __assign({}, config, attrs), triangle(h, triAttrs));
         },
+        arc: function (attrs) {
+            return triangle(h, attrs);
+        },
+        svgArc: function (attrs, arcAttrs) {
+            return svg(h, __assign({}, config, attrs), arc(h, arcAttrs));
+        },
         downloadIcon: function () { return downloadIcon(h); },
         svgDownloadIcon: function (attrs) { return svg(h, __assign({}, config, { viewBox: '0 0 433.5 433.5' }, attrs), downloadIcon(h)); },
         shareIcon: function () { return shareIcon(h); },
@@ -99,3 +112,32 @@ function HyperSVG(h, config) {
     };
 }
 exports.default = HyperSVG;
+/**
+ * Convert radius & degrees to cartesian coords
+ */
+function polarToCartesian(out, radius, degrees) {
+    var r = (degrees - 90) * Math.PI / 180.0;
+    out.x = radius * Math.cos(r);
+    out.y = radius * Math.sin(r);
+    return out;
+}
+var _p0 = { x: 0, y: 0 };
+var _p1 = { x: 0, y: 0 };
+/**
+ * Create an SVG arc path definition centred at x,y with radius,
+ * start and end angles (clockwise, in degrees).
+ * The returned string can be used for a `d` attribute of a `<path>` element
+ */
+function svgArcPath(x, y, radius, startAngle, endAngle) {
+    var p0 = _p0;
+    var p1 = _p1;
+    polarToCartesian(p0, radius, endAngle);
+    polarToCartesian(p1, radius, startAngle);
+    p0.x += x;
+    p0.y += y;
+    p1.x += x;
+    p1.y += y;
+    var arcSweep = endAngle - startAngle <= 180 ? '0' : '1';
+    return 'M ' + p0.x + ' ' + p0.y +
+        'A ' + radius + ' ' + radius + ' 0 ' + arcSweep + ' 0 ' + p1.x + ' ' + p1.y;
+}
