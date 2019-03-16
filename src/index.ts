@@ -44,18 +44,22 @@ export function rect (h: HyperScript, attrs: RectAttrs) {
 // Triangle
 
 export interface TriangleAttrs extends HyperScriptAttrs {
+	x?: number
+	y?: number
+	scale?: number
 	angle?: number
 }
 
 /** Equilateral triangle with any rotation */
 export function triangle (h: HyperScript, attrs: TriangleAttrs = {}) {
-	const {angle = 0, ...polyAttrs} = attrs
+	const {angle = 0, scale = 1, x = 0.5, y = 0.5, ...polyAttrs} = attrs
 	const r = Math.PI * angle / 180
 	return h('polygon', {
-		points: [0, 1, 2].map(i => Math.PI * 2 * i / 3 + r).map(r =>
-			`${Math.cos(r) * 0.5 + 0.5},${Math.sin(r) * 0.5 + 0.5}`
-		).join(', '),
-		polyAttrs
+		points: [0, 1, 2]
+			.map(i => Math.PI * 2 * i / 3 + r)
+			.map(r => `${Math.cos(r) * 0.5 * scale + x},${Math.sin(r) * 0.5 * scale + y}`)
+			.join(', '),
+		...polyAttrs
 	})
 }
 

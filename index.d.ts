@@ -22,6 +22,9 @@ export interface RectAttrs extends HyperScriptAttrs {
 /** Rectangle */
 export declare function rect(h: HyperScript, attrs: RectAttrs): any;
 export interface TriangleAttrs extends HyperScriptAttrs {
+    x?: number;
+    y?: number;
+    scale?: number;
     angle?: number;
 }
 /** Equilateral triangle with any rotation */

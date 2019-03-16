@@ -44,14 +44,12 @@ exports.rect = rect;
 /** Equilateral triangle with any rotation */
 function triangle(h, attrs) {
     if (attrs === void 0) { attrs = {}; }
-    var _a = attrs.angle, angle = _a === void 0 ? 0 : _a, polyAttrs = __rest(attrs, ["angle"]);
+    var _a = attrs.angle, angle = _a === void 0 ? 0 : _a, _b = attrs.scale, scale = _b === void 0 ? 1 : _b, _c = attrs.x, x = _c === void 0 ? 0.5 : _c, _d = attrs.y, y = _d === void 0 ? 0.5 : _d, polyAttrs = __rest(attrs, ["angle", "scale", "x", "y"]);
     var r = Math.PI * angle / 180;
-    return h('polygon', {
-        points: [0, 1, 2].map(function (i) { return Math.PI * 2 * i / 3 + r; }).map(function (r) {
-            return Math.cos(r) * 0.5 + 0.5 + "," + (Math.sin(r) * 0.5 + 0.5);
-        }).join(', '),
-        polyAttrs: polyAttrs
-    });
+    return h('polygon', __assign({ points: [0, 1, 2]
+            .map(function (i) { return Math.PI * 2 * i / 3 + r; })
+            .map(function (r) { return Math.cos(r) * 0.5 * scale + x + "," + (Math.sin(r) * 0.5 * scale + y); })
+            .join(', ') }, polyAttrs));
 }
 exports.triangle = triangle;
 /** Arc centered at x, y, with given radius, sweeps from startAngle to endAngle */
