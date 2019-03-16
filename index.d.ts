@@ -19,6 +19,7 @@ export interface RectAttrs extends HyperScriptAttrs {
     width: number | string;
     height: number | string;
 }
+/** Rectangle */
 export declare function rect(h: HyperScript, attrs: RectAttrs): any;
 export interface TriangleAttrs extends HyperScriptAttrs {
     angle?: number;
@@ -31,24 +32,42 @@ export interface ArcAttrs extends HyperScriptAttrs {
     radius?: number;
     startAngle?: number;
     endAngle?: number;
+    strokeWidth?: number;
 }
-/** Arc drawn from start to end angle */
+/** Arc centered at x, y, with given radius, sweeps from startAngle to endAngle */
 export declare function arc(h: HyperScript, attrs?: ArcAttrs): any;
-export declare function downloadIcon(h: HyperScript): any;
-export declare function shareIcon(h: HyperScript): any;
+/** Download Icon */
+export declare function downloadIcon(h: HyperScript, attrs?: HyperScriptAttrs): any;
+/** Share Icon */
+export declare function shareIcon(h: HyperScript, attrs?: HyperScriptAttrs): any;
+export declare function checkmark(h: HyperScript, attrs?: HyperScriptAttrs): any;
 /**
  * Inject Hyperscript dependency once then use the returned interface
  */
 export default function HyperSVG(h: HyperScript, config?: HyperSVGAttrs): {
+    /** Render a SVG element with attributes and children */
     svg: (attrs?: HyperSVGAttrs | undefined, ...children: any[]) => any;
+    /** Rectangle path */
     rect: (attrs?: RectAttrs | undefined) => any;
+    /** Rectangle SVG */
     svgRect: (attrs: HyperSVGAttrs, rcAttrs: RectAttrs) => any;
+    /** Equilateral triangle path */
     triangle: (attrs?: TriangleAttrs | undefined) => any;
+    /** Equilateral triangle SVG */
     svgTriangle: (attrs?: HyperSVGAttrs | undefined, triAttrs?: TriangleAttrs | undefined) => any;
+    /** Arc path centered at x, y, with given radius, sweeps from startAngle to endAngle */
     arc: (attrs?: ArcAttrs | undefined) => any;
+    /** Arc SVG centered at x, y, with given radius, sweeps from startAngle to endAngle */
     svgArc: (attrs?: HyperSVGAttrs | undefined, arcAttrs?: ArcAttrs | undefined) => any;
+    /** Renders the path for a download icon */
     downloadIcon: () => any;
+    /** Renders a download icon with SVG container */
     svgDownloadIcon: (attrs?: HyperSVGAttrs | undefined) => any;
+    /** Renders the path for a share icon */
     shareIcon: () => any;
     svgShareIcon: (attrs?: HyperSVGAttrs | undefined) => any;
+    /** Renders the path for a checkmark symbol */
+    checkmark: (attrs?: HyperScriptAttrs | undefined) => any;
+    /** Renders a checkmark symbol with SVG container */
+    svgCheckmark: (attrs?: HyperSVGAttrs) => any;
 };
