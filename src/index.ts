@@ -84,9 +84,25 @@ export function arc (h: HyperScript, attrs: ArcAttrs = {}) {
 	return h('path', {
 		//d: svgArcPath(x, y, radius, startAngle, endAngle)
 		d: svgArcPath(
-			radius, radius, radius - strokeWidth / 2, startAngle, endAngle
+			x, y, radius - strokeWidth / 2, startAngle, endAngle
 		),
 		style: `stroke-width: ${strokeWidth}`,
+		...arcAttrs
+	})
+}
+
+// PolyLine
+
+export interface PolyLineAttrs extends HyperScriptAttrs {
+	points: {x: number, y: number}[]
+	pathLength?: number
+}
+
+/** Polyline - array of points */
+export function polyLine (h: HyperScript, attrs: PolyLineAttrs) {
+	const {points, ...arcAttrs} = attrs
+	return h('polyline', {
+		points: attrs.points.map(p => `${p.x},${p.y}`).join(' '),
 		...arcAttrs
 	})
 }
@@ -164,6 +180,16 @@ export default function HyperSVG (h: HyperScript, config: HyperSVGAttrs = {}) {
 		svgArc: (attrs?: HyperSVGAttrs, arcAttrs?: ArcAttrs) => {
 			return svg(h, {...config, ...attrs},
 				arc(h, arcAttrs)
+			)
+		},
+		/** PolyLine - draws an array of {x,y} points */
+		polyLine: (attrs: PolyLineAttrs) => {
+			return polyLine(h, attrs)
+		},
+		/** PolyLine - draws an array of {x,y} points */
+		svgPolyLine: (attrs: HyperSVGAttrs | undefined, plAttrs: PolyLineAttrs) => {
+			return svg(h, {...config, ...attrs},
+				polyLine(h, plAttrs)
 			)
 		},
 		/** Renders the path for a download icon */

@@ -1,6 +1,6 @@
 {
   "name": "hypersvg",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,10 +9,10 @@
     "clean": "rm -f index.js index.d.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "spacejack",
   "license": "ISC",
   "devDependencies": {
-    "tslint": "^5.13.1",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
   }
 }

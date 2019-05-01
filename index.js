@@ -58,9 +58,15 @@ function arc(h, attrs) {
     var _a = attrs.x, x = _a === void 0 ? 0.5 : _a, _b = attrs.y, y = _b === void 0 ? 0.5 : _b, _c = attrs.radius, radius = _c === void 0 ? 0.5 : _c, _d = attrs.startAngle, startAngle = _d === void 0 ? 0 : _d, _e = attrs.endAngle, endAngle = _e === void 0 ? 360 : _e, _f = attrs.strokeWidth, strokeWidth = _f === void 0 ? 0 : _f, arcAttrs = __rest(attrs, ["x", "y", "radius", "startAngle", "endAngle", "strokeWidth"]);
     return h('path', __assign({ 
         //d: svgArcPath(x, y, radius, startAngle, endAngle)
-        d: svgArcPath(radius, radius, radius - strokeWidth / 2, startAngle, endAngle), style: "stroke-width: " + strokeWidth }, arcAttrs));
+        d: svgArcPath(x, y, radius - strokeWidth / 2, startAngle, endAngle), style: "stroke-width: " + strokeWidth }, arcAttrs));
 }
 exports.arc = arc;
+/** Polyline - array of points */
+function polyLine(h, attrs) {
+    var points = attrs.points, arcAttrs = __rest(attrs, ["points"]);
+    return h('polyline', __assign({ points: attrs.points.map(function (p) { return p.x + "," + p.y; }).join(' ') }, arcAttrs));
+}
+exports.polyLine = polyLine;
 // Icons
 /** Download Icon */
 function downloadIcon(h, attrs) {
@@ -120,6 +126,14 @@ function HyperSVG(h, config) {
         /** Arc SVG centered at x, y, with given radius, sweeps from startAngle to endAngle */
         svgArc: function (attrs, arcAttrs) {
             return svg(h, __assign({}, config, attrs), arc(h, arcAttrs));
+        },
+        /** PolyLine - draws an array of {x,y} points */
+        polyLine: function (attrs) {
+            return polyLine(h, attrs);
+        },
+        /** PolyLine - draws an array of {x,y} points */
+        svgPolyLine: function (attrs, plAttrs) {
+            return svg(h, __assign({}, config, attrs), polyLine(h, plAttrs));
         },
         /** Renders the path for a download icon */
         downloadIcon: function () { return downloadIcon(h); },

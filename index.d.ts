@@ -39,6 +39,15 @@ export interface ArcAttrs extends HyperScriptAttrs {
 }
 /** Arc centered at x, y, with given radius, sweeps from startAngle to endAngle */
 export declare function arc(h: HyperScript, attrs?: ArcAttrs): any;
+export interface PolyLineAttrs extends HyperScriptAttrs {
+    points: {
+        x: number;
+        y: number;
+    }[];
+    pathLength?: number;
+}
+/** Polyline - array of points */
+export declare function polyLine(h: HyperScript, attrs: PolyLineAttrs): any;
 /** Download Icon */
 export declare function downloadIcon(h: HyperScript, attrs?: HyperScriptAttrs): any;
 /** Share Icon */
@@ -62,6 +71,10 @@ export default function HyperSVG(h: HyperScript, config?: HyperSVGAttrs): {
     arc: (attrs?: ArcAttrs | undefined) => any;
     /** Arc SVG centered at x, y, with given radius, sweeps from startAngle to endAngle */
     svgArc: (attrs?: HyperSVGAttrs | undefined, arcAttrs?: ArcAttrs | undefined) => any;
+    /** PolyLine - draws an array of {x,y} points */
+    polyLine: (attrs: PolyLineAttrs) => any;
+    /** PolyLine - draws an array of {x,y} points */
+    svgPolyLine: (attrs: HyperSVGAttrs | undefined, plAttrs: PolyLineAttrs) => any;
     /** Renders the path for a download icon */
     downloadIcon: () => any;
     /** Renders a download icon with SVG container */
